@@ -1,36 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
-
-const schedule = {
-	title: 'CS Courses for 2021-2022',
-    courses: {
-        'F321': {
-            id: 'F321',
-            meets: 'TuTh 17:00-18:20',
-            title: 'Programming Languages'
-        },
-        'F336': {
-            id: 'F336',
-            meets: 'TuTh 11:00-12:20',
-            title: 'Design and Analysis of Algorithms'
-        },
-        'W340': {
-            id: 'W340',
-            meets: 'TuTh 9:30-10:50',
-            title: 'Introduction to Networking'
-        },
-        'W200': {
-            id: 'W200',
-            meets: 'TuTh 12:30-13:50',
-            title: 'Foundations of Data Science'
-        },
-        'W394': {
-            id: 'W394',
-            meets: 'MW 15:30-16:50',
-            title: 'Agile Software Development'
-        }
-    }
-}
 
 const terms = { 
     F: 'Fall', 
@@ -48,7 +17,7 @@ const getCourseTerm = course => (
 
 const getCourseNumber = course => (
   course.id.slice(1, 4)
-)
+) 
 
 const Course = ({ course }) => (
     <div className="card m-1 p-1">
@@ -65,11 +34,30 @@ const CourseList = ({ courses }) => (
     </div>
 )
 
-const App = () =>  (
-    <div className="container">
-        <Banner title={ schedule.title } />
-        <CourseList courses={ schedule.courses } />
-    </div>
-)
+const App = () =>  {
+    const [schedule, setSchedule] = useState();
+
+    const url = 'https://courses.cs.northwestern.edu/394/data/cs-courses.php';
+
+    useEffect(() => {
+        const fetchSchedule = async () => {
+            const response = await fetch(url)
+            if (!response.ok) throw response
+
+            const json = await response.json()
+            setSchedule(json)
+        }
+        fetchSchedule();
+    }, []);
+
+    if (!schedule) return <h1>Loading schedule...</h1>
+
+    return (
+        <div className="container">
+            <Banner title={ schedule.title } />
+            <CourseList courses={ schedule.courses } />
+        </div>
+    )
+}
 
 export default App
