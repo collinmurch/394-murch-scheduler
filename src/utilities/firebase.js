@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut } from 'firebase/auth'
 import { getDatabase, onValue, ref, set } from 'firebase/database'
 
+// Must manually add file firebase auth file to avoid git committing it
 const firebaseConfig = require('./.firebase.env.json')
 
 const firebase = initializeApp(firebaseConfig)
