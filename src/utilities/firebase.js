@@ -1,16 +1,9 @@
 import { useState, useEffect } from 'react'
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut } from 'firebase/auth'
-
 import { getDatabase, onValue, ref, set } from 'firebase/database'
 
-// Must include all required keys in env.json
-let firebaseConfig
-try {
-    firebaseConfig = require('../../env.json')
-} catch {
-    firebaseConfig = {}
-}
+const firebaseConfig = require('./.firebase.env.json')
 
 const firebase = initializeApp(firebaseConfig)
 const database = getDatabase(firebase)
